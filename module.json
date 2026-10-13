@@ -1,0 +1,44 @@
+{
+  "id": "samd-ra-toolkit",
+  "title": "SaMD / AIaMD 法规质量体系工具包（跨辖区映射）",
+  "description": "Software as a Medical Device（SaMD / AIaMD）的注册与质量体系工具包：SaMD 判定树 + IEC 62304 / ISO 14971(AI) / EU AI Act 映射 + PCCP 模板骨架 + AI-CER 骨架 + **跨辖区差异表（NMPA / EU MDR / FDA / PMDA）**。（对应『跨辖区监管映射模板』能力缺口。）",
+  "triggers": {
+    "keywords": [
+      "samd",
+      "aiamd",
+      "NMPA",
+      "FDA",
+      "MDR",
+      "PMDA",
+      "regulatory",
+      "SaMD判定",
+      "监管映射"
+    ],
+    "file_patterns": [
+      "samd_map.py"
+    ],
+    "intents": [
+      "SaMD路径",
+      "跨辖区监管",
+      "法规映射"
+    ]
+  },
+  "provides": [
+    "samd-ra-toolkit",
+    "samd",
+    "ra-kit",
+    "regulatory-map"
+  ],
+  "skills": [],
+  "needs_backends": [],
+  "license": "CC-BY-4.0",
+  "upstream": "OpenRegulatory/templates",
+  "cost": "low",
+  "lazy": true,
+  "nested": true,
+  "entry": "scripts/samd_map.py",
+  "deps": [],
+  "generated_by": "lgd-skeleton/1.0 (manual port from rea scaffold)",
+  "idea": "SaMD/AIaMD 法规质量体系 + 跨辖区（NMPA/MDR/FDA/PMDA）差异映射",
+  "extension_note": "新增辖区：在 `JURISDICTIONS` 字典加一项，跨辖区表自动扩展。"
+}

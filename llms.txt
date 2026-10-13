@@ -1,0 +1,8 @@
+samd-ra-toolkit
+========================
+可插拔模块（lgd-skeleton/1.0）。SaMD / AIaMD 法规质量体系工具包（跨辖区映射）。
+入口: scripts/samd_map.py
+元数据: module.json
+总入口: medical-ai-toolkit
+关联: ai-governance-checklist, ml-validation-toolkit, medical-ai-toolkit
+许可: CC-BY-4.0 · 贡献者: @stevenzhao07 (MedXpert)
