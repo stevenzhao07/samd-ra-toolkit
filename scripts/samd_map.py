@@ -21,6 +21,27 @@ from __future__ import annotations
 import sys
 import argparse
 
+# --- 辖区别名归一化（2026-10-14 跨模块统一词表）---
+# 目标：同一句话在医疗线各模块间通用——既接受 ISO 国家码，也接受监管机构缩写。
+# 注意：东盟(ASEAN) / 拉美(LATAM) 尚无实现，仍会被下方校验明确拒绝。
+_JURIS_ALIAS = {
+    "CN": "CN", "NMPA": "CN", "CHINA": "CN",
+    "US": "US", "USA": "US", "FDA": "US",
+    "EU": "EU", "MDR": "EU", "CE": "EU",
+    "JP": "JP", "JAPAN": "JP", "PMDA": "JP",
+}
+_JURIS_LOCAL = {"CN": "NMPA", "US": "FDA", "EU": "EU", "JP": "PMDA"}
+
+
+def _norm_juris(j):
+    """把用户输入归一化到本模块内部键；未知值原样返回，交由原校验明确拒绝。"""
+    s = (j or "").strip().upper()
+    c = _JURIS_ALIAS.get(s)
+    if c is None:
+        return s
+    return _JURIS_LOCAL.get(c, c)
+
+
 JURISDICTIONS = {
     "NMPA": {
         "region": "中国",
@@ -91,9 +112,12 @@ def _demo() -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description="SaMD 跨辖区法规映射")
     ap.add_argument("--demo", action="store_true", help="打印全部辖区 + 风险 III 建议")
-    ap.add_argument("--jurisdiction", default="ALL", help="NMPA/EU/FDA/PMDA/ALL")
+    ap.add_argument("--selftest", action="store_true", help="跑内置自测（断言 + 负对照 + xfail）")
+    ap.add_argument("--jurisdiction", default="ALL", help="CN|NMPA | US|FDA | EU|MDR | JP|PMDA | ALL（别名互通；ASEAN/LATAM 未实现）")
     ap.add_argument("--risk-class", help="I/II/III/IV 给出落地建议")
     args = ap.parse_args()
+    if getattr(args, "selftest", False):
+        return _selftest()
 
     if args.demo:
         return _demo()
@@ -104,12 +128,64 @@ def main() -> int:
             return 2
         print(f"[风险 {args.risk_class}] {RISK_ADVICE[args.risk_class]}\n")
 
-    js = JURISDICTIONS.keys() if args.jurisdiction.upper() == "ALL" else [args.jurisdiction.upper()]
+    js = JURISDICTIONS.keys() if args.jurisdiction.upper() == "ALL" else [_norm_juris(args.jurisdiction)]
     for j in js:
         if j not in JURISDICTIONS:
             print(f"[err] 未知辖区: {j}")
             return 2
         print_jurisdiction(j)
+    return 0
+
+
+# ==================== 内置自测（--selftest） ====================
+# 由 conformance 补丁于 2026-10-14 生成（生成器 v2）。
+# 特性：端到端 CLI 调用 + 内容断言 + 负对照 + xfail（已知缺陷显式标注，不掩盖）。
+_SELFTEST_CASES = [(['--demo'], 0, [], [], None), (['--jurisdiction', 'FDA', '--risk-class', 'II'], 0, [], [], None), (['--risk-class', 'IX'], 2, [], [], None), (['--jurisdiction', 'US', '--risk-class', 'II'], 0, [], [], '跨模块辖区命名不一致：pms-vigilance 用 CN/US/EU，本模块用 NMPA/FDA/EU/PMDA，US 被拒')]
+
+
+def _selftest() -> int:
+    import os as _os
+    import subprocess as _sp
+    _here = _os.path.dirname(_os.path.abspath(__file__))
+    # 仓库根：脚本位于 <repo>/scripts/ 时取上一级；否则取脚本所在目录
+    _root = _os.path.dirname(_here) if _os.path.basename(_here) == "scripts" else _here
+    _script = _os.path.abspath(__file__)
+    _fail, _xfail, _n = [], [], 0
+    for _case in _SELFTEST_CASES:
+        _args, _rc, _must, _mustnot = _case[0], _case[1], _case[2], _case[3]
+        _reason = _case[4] if len(_case) > 4 else None
+        _n += 1
+        _p = _sp.run([sys.executable, _script] + _args, capture_output=True, cwd=_root)
+        _out = _p.stdout.decode("utf-8", "replace")
+        _bad = []
+        if _p.returncode != _rc:
+            _bad.append(f"rc={_p.returncode} 期望 {_rc}")
+        for _m in _must:
+            if _m not in _out:
+                _bad.append(f"输出缺少 {_m!r}")
+        for _m in _mustnot:
+            if _m in _out:
+                _bad.append(f"输出含禁止内容 {_m!r}")
+        if _rc == 0 and not _out.strip():
+            _bad.append("rc=0 但输出为空（假绿）")
+        if _bad:
+            if _reason:
+                _xfail.append(f"xfail args={_args}：{'；'.join(_bad)} ← 已知缺陷：{_reason}")
+            else:
+                _fail.append(f"args={_args}：{'；'.join(_bad)}")
+    # 通用负对照：未知参数必须非零
+    _n += 1
+    _p = _sp.run([sys.executable, _script, "--__nonexistent_flag__"], capture_output=True, cwd=_root)
+    if _p.returncode == 0:
+        _fail.append("负对照失败：未知参数竟返回 0")
+    for _x in _xfail:
+        print("[selftest][xfail] " + _x)
+    if _fail:
+        print(f"[selftest] FAILED {len(_fail)}/{_n}")
+        for _f in _fail:
+            print("  - " + _f)
+        return 1
+    print(f"[selftest] PASS {_n - len(_xfail)}/{_n}（含负对照；xfail {len(_xfail)} 项为已知缺陷）")
     return 0
 
 
