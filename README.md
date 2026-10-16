@@ -23,7 +23,7 @@ Software as a Medical Device（SaMD / AIaMD）的注册与质量体系工具包�
 
 - 跨辖区矩阵：NMPA / EU MDR / FDA / PMDA 的分类、路径、主管/公告机构、关键文档、典型周期
 - SaMD 判定树：按风险类别（I–IV）给出辖区落地建议
-- 模板骨架：PCCP（ Predetermined Change Control Plan）、AI-CER 章节占位
+- 模板骨架：PCCP（Predetermined Change Control Plan）、AI-CER 章节待补充模板
 - 零依赖 + CLI：`python scripts/samd_map.py --jurisdiction EU`
 
 **上游投稿目标**：OpenRegulatory/templates
