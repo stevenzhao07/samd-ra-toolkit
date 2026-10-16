@@ -3,7 +3,7 @@
   "stage": "L1",
   "stage_name": "分类与注册路径",
   "title": "SaMD / AIaMD 法规质量体系工具包（跨辖区映射）",
-  "description": "Software as a Medical Device（SaMD / AIaMD）的注册与质量体系工具包：SaMD 判定树 + IEC 62304 / ISO 14971(AI) / EU AI Act 映射 + PCCP 模板骨架 + AI-CER 骨架 + **跨辖区差异表（NMPA / EU MDR / FDA / PMDA）**。（对应『跨辖区监管映射模板』能力缺口。）",
+  "description": "Software as a Medical Device (SaMD / AIaMD) registration and regulatory affairs toolkit.",
   "triggers": {
     "keywords": [
       "samd",
