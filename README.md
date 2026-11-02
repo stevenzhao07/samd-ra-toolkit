@@ -1,6 +1,8 @@
 # samd-ra-toolkit
 
-> **Contributed by [@stevenzhao07](https://github.com/stevenzhao07) · Affiliation: MedXpert (medical-device RA & regulatory consultancy) · Pure technical input, no commercial promotion.**
+> Contributed by [@stevenzhao07](https://github.com/stevenzhao07) as an individual project owner.
+> "MedXpert" is an unregistered project identifier — see the account profile for name status.
+> This repo is not affiliated with any legal entity and contains no commercial promotion.
 
 Software as a Medical Device（SaMD / AIaMD）的注册与质量体系工具包：SaMD 判定树 + IEC 62304 / ISO 14971(AI) / EU AI Act 映射 + PCCP 模板骨架 + AI-CER 骨架 + **跨辖区差异表（NMPA / EU MDR / FDA / PMDA）**。（对应『跨辖区监管映射模板』能力缺口。）
 
