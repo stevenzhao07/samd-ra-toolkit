@@ -1,3 +1,5 @@
+<!-- SCORECARD-SCORE -->**OpenSSF Scorecard: 4.8/10**<!-- /SCORECARD-SCORE -->
+
 <!-- LGD-SCORE -->**LGD Trust Score: 77/100**<!-- /LGD-SCORE -->
 
 # samd-ra-toolkit
