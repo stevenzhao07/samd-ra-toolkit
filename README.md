@@ -1,3 +1,5 @@
+<!-- LGD-SCORE -->**LGD Trust Score: 77/100**<!-- /LGD-SCORE -->
+
 # samd-ra-toolkit
 
 [![Auto Eval: LGD + OpenSSF](https://github.com/stevenzhao07/samd-ra-toolkit/actions/workflows/auto-eval.yml/badge.svg)](https://github.com/stevenzhao07/samd-ra-toolkit/actions/workflows/auto-eval.yml)
