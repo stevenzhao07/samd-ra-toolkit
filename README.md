@@ -65,7 +65,7 @@ python scripts/samd_map.py --demo
 ## 关联模块
 
 - [ai-governance-checklist](https://github.com/stevenzhao07/ai-governance-checklist)
-- [ml-validation-toolkit](https://github.com/stevenzhao07/ml-validation-toolkit)
+- ml-validation-toolkit（未建仓·计划中）
 - [medical-ai-toolkit](https://github.com/stevenzhao07/medical-ai-toolkit)
 
 ## 许可
